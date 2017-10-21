@@ -2,7 +2,6 @@ package irmagobridge
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -29,7 +28,7 @@ var actionHandler = &ActionHandler{
 var clientHandler = &ClientHandler{}
 
 func Start(givenBridge IrmaBridge, appDataPath string, assetsPath string) {
-	// TODO: We'll leave this API token in the source for now, 
+	// TODO: We'll leave this API token in the source for now,
 	// as it's possible to decompile it out of the app anyway
 	// In the future it would be good to split this out into a build configuration
 	raven.SetDSN("https://04fd1cdaec154d55ae70458a3618cefa:f5f4fafac9e848e8b2a4f0752d4d0ee0@sentry.io/226950")
@@ -107,12 +106,12 @@ func getEnrollmentStatus() {
 }
 
 func logError(err error) {
-	message := fmt.Sprintf("%s\n%s", err.Error(), err.(*errors.Error).ErrorStack())
+	//message := fmt.Sprintf("%s\n%s", err.Error(), err.(*errors.Error).ErrorStack())
 
 	raven.CaptureError(err, nil)
-	bridge.DebugLog(message)
+	//bridge.DebugLog(message)
 }
 
 func logDebug(message string) {
-	bridge.DebugLog(message)
+	//bridge.DebugLog(message)
 }
