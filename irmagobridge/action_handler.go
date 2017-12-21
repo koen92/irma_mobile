@@ -7,6 +7,7 @@ import (
 
 type ActionHandler struct {
 	sessionLookup map[int]*SessionHandler
+	manualSessionHandler *SessionHandler
 }
 
 type EnrollAction struct {
@@ -26,6 +27,8 @@ type NewSessionAction struct {
 }
 
 func (ah *ActionHandler) NewSession(action *NewSessionAction) (err error) {
+	logDebug("Starting new interactive session, id: " + string(action.SessionID));
+
 	if action.SessionID < 1 {
 		return errors.Errorf("Action id should be provided and larger than zero")
 	}
@@ -35,6 +38,19 @@ func (ah *ActionHandler) NewSession(action *NewSessionAction) (err error) {
 
 	sessionHandler.dismisser = client.NewSession(action.Qr, sessionHandler)
 	return nil
+}
+
+type NewManualSessionAction struct {
+	Request string
+}
+
+func (ah *ActionHandler) NewManualSession(action *NewManualSessionAction) (err error) {
+	ah.manualSessionHandler = &SessionHandler{
+		sessionID:  0,
+	}
+
+  client.NewManualSession(action.Request, ah.manualSessionHandler)
+  return nil
 }
 
 type RespondPermissionAction struct {
@@ -95,6 +111,10 @@ type DismissSessionAction struct {
 }
 
 func (ah *ActionHandler) DismissSession(action *DismissSessionAction) error {
+	if action.SessionID == 0 {
+		// Manual sessions don't need to be dismissed
+		return nil
+	}
 	sh, err := ah.findSessionHandler(action.SessionID)
 	if err != nil {
 		return err
@@ -106,6 +126,9 @@ func (ah *ActionHandler) DismissSession(action *DismissSessionAction) error {
 }
 
 func (ah *ActionHandler) findSessionHandler(sessionID int) (*SessionHandler, error) {
+	if sessionID == 0 {
+		return ah.manualSessionHandler, nil
+	}
 	sh := ah.sessionLookup[sessionID]
 	if sh == nil {
 		return nil, errors.Errorf("Invalid session ID in RespondPermission: %d", sessionID)

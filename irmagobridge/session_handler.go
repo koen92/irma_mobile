@@ -30,6 +30,7 @@ func (sh *SessionHandler) Success(irmaAction irma.Action, result string) {
 		"type":       "SessionHandler.Success",
 		"sessionId":  sh.sessionID,
 		"irmaAction": irmaAction,
+    "result":     result,
 	}
 
 	sendAction(action)

@@ -1,4 +1,5 @@
 package irmagobridge
+/*
 
 import (
 	"github.com/credentials/irmago"
@@ -26,7 +27,8 @@ func (sh *ManualSessionHandler) NewManualSession(action *NewManualSessionAction)
 func (sh *ManualSessionHandler) StatusUpdate(irmaAction irma.Action, status irma.Status) {
 	logDebug("Handling ManualStatusUpdate")
 	action := &OutgoingAction{
-		"type":       "ManualSessionHandler.StatusUpdate",
+		"type":       "SessionHandler.StatusUpdate",
+		"sessionId":  "manual",
 		"irmaAction": irmaAction,
 		"status":     status,
 	}
@@ -42,7 +44,8 @@ type ManualRespondPinAction struct {
 func (sh *ManualSessionHandler) RequestPin(remainingAttempts int, ph irmaclient.PinHandler) {
 	logDebug("Handling ManualRequestPin")
 	action := &OutgoingAction{
-		"type":              "ManualSessionHandler.RequestPin",
+		"type":              "SessionHandler.RequestPin",
+		"sessionId":         "manual",
 		"remainingAttempts": remainingAttempts,
 	}
 
@@ -64,7 +67,8 @@ type ManualRespondPermissionAction struct {
 func (sh *ManualSessionHandler) RequestSignaturePermission(request irma.SignatureRequest, requesterName string, ph irmaclient.PermissionHandler) {
 	logDebug("Handling ManualRequestSignaturePermission")
 	action := &OutgoingAction{
-		"type":                 "ManualSessionHandler.RequestSignaturePermission",
+		"type":                 "SessionHandler.RequestSignaturePermission",
+		"sessionId":            "manual",
 		"requesterName":        requesterName,
 		"toDisclose":           request.ToDisclose(),
 		"disclosureCandidates": request.Candidates,
@@ -97,14 +101,16 @@ func (sh *ManualSessionHandler) RespondPermission(action *ManualRespondPermissio
 func (sh *ManualSessionHandler) Cancelled(irmaAction irma.Action) {
 	logDebug("Handling ManualCancelled")
 	action := &OutgoingAction{
-		"type":      "ManualSessionHandler.Cancelled",
+		"type":      "SessionHandler.Cancelled",
+		"sessionId":  "manual",
 	}
 	sendAction(action)
 }
 func (sh *ManualSessionHandler) Failure(irmaAction irma.Action, err *irma.SessionError) {
 	logDebug("Handling ManualFailure")
 	action := &OutgoingAction{
-		"type":         "ManualSessionHandler.Failure",
+		"type":         "SessionHandler.Failure",
+		"sessionId":    "manual",
 		"irmaAction":   irmaAction,
 		"errorType":    err.ErrorType,
 		"errorMessage": err.Err.Error(),
@@ -117,7 +123,8 @@ func (sh *ManualSessionHandler) Failure(irmaAction irma.Action, err *irma.Sessio
 func (sh *ManualSessionHandler) MissingKeyshareEnrollment(manager irma.SchemeManagerIdentifier) {
 	logDebug("Handling ManualMissingKeyshareEnrollment")
 	action := &OutgoingAction{
-		"type":            "ManualSessionHandler.MissingKeyshareEnrollment",
+		"type":            "SessionHandler.MissingKeyshareEnrollment",
+		"sessionId":       "manual",
 		"schemeManagerId": manager,
 	}
 	sendAction(action)
@@ -132,7 +139,8 @@ func (sh *ManualSessionHandler) Success(irmaAction irma.Action, result string) {
 	logDebug("Handling ManualSucces")
 
 	action := &OutgoingAction{
-		"type":       "ManualSessionHandler.Success",
+		"type":       "SessionHandler.Success",
+		"sessionId":  "manual",
 		"irmaAction": irmaAction,
 		"result": result,
 	}
@@ -143,9 +151,11 @@ func (sh *ManualSessionHandler) Success(irmaAction irma.Action, result string) {
 func (sh *ManualSessionHandler) UnsatisfiableRequest(irmaAction irma.Action, missingAttributes irma.AttributeDisjunctionList) {
 	logDebug("Handling ManualUnsatisfiableRequest")
 	action := &OutgoingAction{
-		"type":              "ManualSessionHandler.UnsatisfiableRequest",
+		"type":              "SessionHandler.UnsatisfiableRequest",
+		"sessionId":         "manual",
 		"missingAttributes": missingAttributes,
 	}
 
 	sendAction(action)
 }
+*/

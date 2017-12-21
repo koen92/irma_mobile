@@ -26,8 +26,6 @@ var actionHandler = &ActionHandler{
 	sessionLookup: map[int]*SessionHandler{},
 }
 
-var manualSessionHandler = &ManualSessionHandler{}
-
 var clientHandler = &ClientHandler{}
 
 func Start(givenBridge IrmaBridge, appDataPath string, assetsPath string) {

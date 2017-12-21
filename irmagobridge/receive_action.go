@@ -42,7 +42,7 @@ func recoveredReceiveAction(actionJSONString string) {
 		logDebug("New manual session!")
 		action := &NewManualSessionAction{}
 		if err = json.Unmarshal(actionJSON, action); err == nil {
-			err = manualSessionHandler.NewManualSession(action)
+			err = actionHandler.NewManualSession(action)
 		}
 
 	case "RespondPermission":
@@ -51,11 +51,11 @@ func recoveredReceiveAction(actionJSONString string) {
 			err = actionHandler.RespondPermission(action)
 		}
 
-	case "ManualRespondPermission":
-		action := &ManualRespondPermissionAction{}
-		if err = json.Unmarshal(actionJSON, action); err == nil {
-			err = manualSessionHandler.RespondPermission(action)
-		}
+	// case "ManualRespondPermission":
+	// 	action := &ManualRespondPermissionAction{}
+	// 	if err = json.Unmarshal(actionJSON, action); err == nil {
+	// 		err = manualSessionHandler.RespondPermission(action)
+	// 	}
 
 	case "RespondPin":
 		action := &RespondPinAction{}
@@ -63,11 +63,11 @@ func recoveredReceiveAction(actionJSONString string) {
 			err = actionHandler.RespondPin(action)
 		}
 
-	case "ManualRespondPin":
-		action := &ManualRespondPinAction{}
-		if err = json.Unmarshal(actionJSON, action); err == nil {
-			err = manualSessionHandler.RespondPin(action)
-		}
+	// case "ManualRespondPin":
+	// 	action := &ManualRespondPinAction{}
+	// 	if err = json.Unmarshal(actionJSON, action); err == nil {
+	// 		err = manualSessionHandler.RespondPin(action)
+	// 	}
 
 	case "RemoveAllAttributes":
 		err = actionHandler.RemoveAll()
