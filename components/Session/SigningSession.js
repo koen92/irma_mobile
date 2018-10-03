@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Image } from 'react-native';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -28,6 +29,7 @@ export default class SigningSession extends Component {
     irmaConfiguration: PropTypes.object.isRequired,
     makeDisclosureChoice: PropTypes.func.isRequired,
     message: PropTypes.string,
+    messageType: PropTypes.string,
     navigateBack: PropTypes.func.isRequired,
     sendMail: PropTypes.func.isRequired,
     navigateToEnrollment: PropTypes.func.isRequired,
@@ -36,12 +38,38 @@ export default class SigningSession extends Component {
     session: PropTypes.object.isRequired,
   }
 
+  renderMessageText = () => {
+    const {
+      session: {
+        message,
+        messageType,
+      }
+    } = this.props;
+
+    if (messageType === 'jpg') {
+      const image = `data:image/jpeg;base64,${message}`;
+      return (
+        <Image
+          style = {{ flex: 1, width: '90%', aspectRatio: 1, resizeMode: 'contain'}}
+          source={{uri: image}}
+        />
+      );
+    }
+
+    return (
+      <Text style={{fontWeight: 'bold', paddingLeft: 10}}>
+      {'\n'}{ message }
+      </Text>
+    );
+  };
+
   renderStatusCard() {
     const {
       navigateToEnrollment,
       session,
       session: {
         message,
+        messageType,
         serverName,
         status,
         request,
@@ -56,11 +84,6 @@ export default class SigningSession extends Component {
         heading = <Text>{ t(`.${status}Heading`) }</Text>;
     }
 
-    const messageText = (
-      <Text style={{fontWeight: 'bold', paddingLeft: 10}}>
-        {'\n'}{ message }
-      </Text>
-    );
 
     let explanation;
     switch(status) {
@@ -75,11 +98,17 @@ export default class SigningSession extends Component {
 
       case 'requestPermission': {
         explanation = (
-          <View>
+          <View
+            style = {{ flex: 1 }}
+          >
             <Text>
               { t('.requestPermission.beforeExplanation') }
             </Text>
-            { messageText }
+            <View
+              style = {{ justifyContent: 'center' }}
+            >
+              { this.renderMessageText() }
+            </View>
             <Text>{'\n'}{ t('.requestPermission.afterExplanation') }</Text>
           </View>
         );
@@ -89,9 +118,15 @@ export default class SigningSession extends Component {
 
       case 'success': {
         explanation = (
-          <View>
+          <View
+            style = {{ flex: 1, resizeMode: 'contain'}}
+          >
             <Text>{ t(`.${status}.beforeExplanation`) }</Text>
-            { messageText }
+            <View
+              style = {{ justifyContent: 'center' }}
+            >
+               { this.renderMessageText() }
+            </View>
             <Text>{'\n'}{ t(`.${status}.afterExplanation`) }</Text>
           </View>
         );
